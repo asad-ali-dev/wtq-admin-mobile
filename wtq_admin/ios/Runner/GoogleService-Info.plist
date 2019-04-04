@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>AD_UNIT_ID_FOR_BANNER_TEST</key>
+	<string>ca-app-pub-3940256099942544/2934735716</string>
+	<key>AD_UNIT_ID_FOR_INTERSTITIAL_TEST</key>
+	<string>ca-app-pub-3940256099942544/4411468910</string>
+	<key>CLIENT_ID</key>
+	<string>627990748311-4lo43qauo6cif8suurbnf0a7njdjsicr.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.627990748311-4lo43qauo6cif8suurbnf0a7njdjsicr</string>
+	<key>API_KEY</key>
+	<string>AIzaSyCAYWCFHBhxN818LtSeeN7f4UB5qRGwjLc</string>
+	<key>GCM_SENDER_ID</key>
+	<string>627990748311</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.tenpearls.wtq.admin</string>
+	<key>PROJECT_ID</key>
+	<string>women-tech-quest-app</string>
+	<key>STORAGE_BUCKET</key>
+	<string>women-tech-quest-app.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<true></true>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<false></false>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:627990748311:ios:ac2c67ab21f2a4bd</string>
+	<key>DATABASE_URL</key>
+	<string>https://women-tech-quest-app.firebaseio.com</string>
+</dict>
+</plist>

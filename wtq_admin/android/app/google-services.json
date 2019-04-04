@@ -1,0 +1,137 @@
+{
+  "project_info": {
+    "project_number": "627990748311",
+    "firebase_url": "https://women-tech-quest-app.firebaseio.com",
+    "project_id": "women-tech-quest-app",
+    "storage_bucket": "women-tech-quest-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:627990748311:android:ac2c67ab21f2a4bd",
+        "android_client_info": {
+          "package_name": "com.tenpearls.wtq.admin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "627990748311-8icr3kkesd1u2so1odeus1f870o7a6o6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.tenpearls.wtq.admin",
+            "certificate_hash": "9e88a092c180e35c553d920ed584f3eccd1202bb"
+          }
+        },
+        {
+          "client_id": "627990748311-ami6lsv4n3iqdgcktr8ffis9tih0jvrp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCJwtWFULJNQnV508P3SLBxzFb1hjGwIus"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "627990748311-ami6lsv4n3iqdgcktr8ffis9tih0jvrp.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "627990748311-kuohj0ha3mt2p6jma7umsv6ctho0laur.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.tenpearls.wtq.app"
+              }
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:627990748311:android:62faada82820727c",
+        "android_client_info": {
+          "package_name": "com.tenpearls.wtq.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "627990748311-89ngrnrh4lauc2ic9u25dd95fkt3vkre.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.tenpearls.wtq.app",
+            "certificate_hash": "f3a3c0a646c8059071b86214ddac624c23ea763f"
+          }
+        },
+        {
+          "client_id": "627990748311-23a13olcrfjol743bf5sh0m3dggk8e6d.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.tenpearls.wtq.app",
+            "certificate_hash": "9e88a092c180e35c553d920ed584f3eccd1202bb"
+          }
+        },
+        {
+          "client_id": "627990748311-p6oefopgohk78otjflamlo9jb3kjjosp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.tenpearls.wtq.app",
+            "certificate_hash": "5199bccc181ee621a57a77c4e8705365b65ecbd5"
+          }
+        },
+        {
+          "client_id": "627990748311-l55hschu97vo4ookpb311mggh09hcuik.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.tenpearls.wtq.app",
+            "certificate_hash": "f8b3d4ee38982455d454a43bb9b0acaaaf617541"
+          }
+        },
+        {
+          "client_id": "627990748311-ami6lsv4n3iqdgcktr8ffis9tih0jvrp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCJwtWFULJNQnV508P3SLBxzFb1hjGwIus"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "627990748311-ami6lsv4n3iqdgcktr8ffis9tih0jvrp.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "627990748311-kuohj0ha3mt2p6jma7umsv6ctho0laur.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.tenpearls.wtq.app"
+              }
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
