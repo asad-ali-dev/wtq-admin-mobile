@@ -6,6 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wtq_admin/main.dart';
 import 'package:wtq_admin/model/user.dart';
 import 'package:wtq_admin/string_constants.dart';
+import 'package:flutter_tags/selectable_tags.dart';
 
 class AdminPage extends StatefulWidget {
   @override
@@ -19,7 +20,7 @@ class _AdminPageState extends State<AdminPage> {
       length: 3,
       child: Scaffold(
         appBar: AppBar(
-            actions: <Widget>[
+          actions: <Widget>[
             IconButton(
               icon: Icon(Icons.exit_to_app),
               onPressed: () {
@@ -68,7 +69,8 @@ class _AdminPageState extends State<AdminPage> {
     return StreamBuilder<QuerySnapshot>(
       stream: Firestore.instance
           .collection(kKeyUser)
-          .where("isRegistered", isEqualTo: true).where("registration.competition", isEqualTo: name)
+          .where("isRegistered", isEqualTo: true)
+          .where("registration.competition", isEqualTo: name)
           .snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData)
@@ -90,14 +92,13 @@ class _AdminPageState extends State<AdminPage> {
     if (snapshot == null) return Container();
     if (snapshot.length < 1) return Container();
     return ListView(
-      padding: const EdgeInsets.only(top: 20.0),
+      padding: const EdgeInsets.only(top: 10.0),
       children: snapshot.map((data) => _buildListItem(context, data)).toList(),
     );
   }
 
   Widget _buildListItem(BuildContext context, DocumentSnapshot data) {
     final user = User.fromSnapshot(data);
-    print(user.isRegistrationConfirmed);
     Icon listIcon = user.isRegistrationConfirmed
         ? Icon(
             Icons.done,
@@ -105,12 +106,47 @@ class _AdminPageState extends State<AdminPage> {
           )
         : Icon(Icons.done, color: Colors.grey[300]);
     return ListTile(
-      title: Text(user.name),
+      leading: CircleAvatar(
+        backgroundImage: NetworkImage(user.photoUrl),
+      ),
+      title: _titleWidget(user),
       subtitle: Text(user.email),
       trailing: listIcon,
       onTap: () {
         _markUserConfirmation(user);
       },
+    );
+  }
+
+  Widget _titleWidget(User user) {
+    return Container(
+      child: Row(
+        children: <Widget>[
+          Flexible(flex: 2, fit: FlexFit.tight, child: Text(user.name)),
+          Flexible(
+            flex: 1,
+            fit: FlexFit.loose,
+            child: Container(
+              width: 100,
+              child: SelectableTags(
+                height: 15,
+                tags: [
+                  Tag(
+                    title: user.registration.occupation,
+                  ),
+                ],
+                fontSize: 12,
+                alignment: MainAxisAlignment.start,
+                columns: 1, // default 4
+                symmetry: true,
+                onPressed: (tag) {},
+                activeColor: Colors.white,
+                textActiveColor: Colors.black,
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 

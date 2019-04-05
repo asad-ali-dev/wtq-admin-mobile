@@ -31,5 +31,8 @@ ThemeData _buildTheme() {
       textTheme: ButtonTextTheme.primary,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
     ),
+    tabBarTheme: TabBarTheme(
+      labelColor: Colors.black,
+    )
   );
 }
