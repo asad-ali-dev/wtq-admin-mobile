@@ -128,7 +128,7 @@ class _MyHomePageState extends State<MyHomePage> {
     try {
       FirebaseUser authenticatedUser = await _authenticateUser();
       var userFromDB = await Firestore.instance
-          .collection(kAdmin)
+          .collection(kKeyAdmin)
           .where("email", isEqualTo: authenticatedUser.email)
           .getDocuments();
       setState(() {

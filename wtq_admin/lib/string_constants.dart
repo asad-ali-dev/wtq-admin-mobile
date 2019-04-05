@@ -1,6 +1,9 @@
-// Firebase keys
-const String kUser = "users";
-const String kAdmin = "admins";
+// Firebase
+const String kKeyUser = "users";
+const String kKeyAdmin = "admins";
+const String kFBValueCoding = "Coding";
+const String kFBValueTesting = "Testing";
+const String kFBValueDesign = "Design";
 
 // Page titles
 const String kTitleLogin = "WTQ Admin Login";

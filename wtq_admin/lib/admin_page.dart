@@ -38,28 +38,14 @@ class _AdminPageState extends State<AdminPage> {
         ),
         body: TabBarView(
           children: [
-            _buildBody(),
-            Icon(Icons.directions_transit),
-            Icon(Icons.directions_bike),
+            _buildListOfCompetition(kFBValueCoding),
+            _buildListOfCompetition(kFBValueTesting),
+            _buildListOfCompetition(kFBValueDesign),
           ],
         ),
       ),
     );
   }
-//    return Scaffold(
-//        appBar: AppBar(
-//          title: Text(kTitleAdmin),
-//          actions: <Widget>[
-//            IconButton(
-//              icon: Icon(Icons.exit_to_app),
-//              onPressed: () {
-//                _onSignOut();
-//              },
-//            ),
-//          ],
-//        ),
-//        body: _buildBody());
-//  }
 
   void _onSignOut() async {
     await GoogleSignIn().signOut();
@@ -70,19 +56,19 @@ class _AdminPageState extends State<AdminPage> {
         .pushReplacement(MaterialPageRoute(builder: (context) => MyHomePage()));
   }
 
-  Widget _buildBody() {
+  Widget _buildListOfCompetition(String name) {
     return Container(
       child: Column(
-        children: <Widget>[Expanded(child: _streamBuilder())],
+        children: <Widget>[Expanded(child: _streamBuilder(name))],
       ),
     );
   }
 
-  StreamBuilder<QuerySnapshot> _streamBuilder() {
+  StreamBuilder<QuerySnapshot> _streamBuilder(String name) {
     return StreamBuilder<QuerySnapshot>(
       stream: Firestore.instance
-          .collection(kUser)
-          .where("isRegistered", isEqualTo: true)
+          .collection(kKeyUser)
+          .where("isRegistered", isEqualTo: true).where("registration.competition", isEqualTo: name)
           .snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData)
@@ -131,7 +117,7 @@ class _AdminPageState extends State<AdminPage> {
   void _markUserConfirmation(User user) {
     user.isRegistrationConfirmed = !user.isRegistrationConfirmed;
     Firestore.instance
-        .collection(kUser)
+        .collection(kKeyUser)
         .document(user.id)
         .updateData(user.toJson());
   }
