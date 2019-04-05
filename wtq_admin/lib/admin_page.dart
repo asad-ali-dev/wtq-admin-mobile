@@ -15,10 +15,11 @@ class AdminPage extends StatefulWidget {
 class _AdminPageState extends State<AdminPage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return DefaultTabController(
+      length: 3,
+      child: Scaffold(
         appBar: AppBar(
-          title: Text(kTitleAdmin),
-          actions: <Widget>[
+            actions: <Widget>[
             IconButton(
               icon: Icon(Icons.exit_to_app),
               onPressed: () {
@@ -26,17 +27,47 @@ class _AdminPageState extends State<AdminPage> {
               },
             ),
           ],
+          bottom: TabBar(
+            tabs: [
+              Tab(text: kTxtCoding),
+              Tab(text: kTxtTesting),
+              Tab(text: kTxtDesign),
+            ],
+          ),
+          title: Text(kTitleAdmin),
         ),
-        body: _buildBody());
+        body: TabBarView(
+          children: [
+            Icon(Icons.directions_car),
+            Icon(Icons.directions_transit),
+            Icon(Icons.directions_bike),
+          ],
+        ),
+      ),
+    );
   }
+//    return Scaffold(
+//        appBar: AppBar(
+//          title: Text(kTitleAdmin),
+//          actions: <Widget>[
+//            IconButton(
+//              icon: Icon(Icons.exit_to_app),
+//              onPressed: () {
+//                _onSignOut();
+//              },
+//            ),
+//          ],
+//        ),
+//        body: _buildBody());
+//  }
 
   void _onSignOut() async {
     await GoogleSignIn().signOut();
     await FirebaseAuth.instance.signOut();
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.clear();
-    Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => MyHomePage()));
+    Navigator.of(context)
+        .pushReplacement(MaterialPageRoute(builder: (context) => MyHomePage()));
   }
 
   Widget _buildBody() {

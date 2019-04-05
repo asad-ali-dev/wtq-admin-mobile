@@ -14,6 +14,9 @@ const String kTxtLoading = "Loading...";
 const String kTxtAppTitle = 'WTQ Admin App';
 const String kTxtAdminApp = "Admin App";
 const String kTxtLogin = "Login";
+const String kTxtCoding = "Coding";
+const String kTxtTesting = "Testing";
+const String kTxtDesign = "Design";
 const String kTxtOk = "Ok";
 
 // Alert Messages
