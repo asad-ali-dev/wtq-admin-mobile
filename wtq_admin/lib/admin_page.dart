@@ -38,7 +38,7 @@ class _AdminPageState extends State<AdminPage> {
         ),
         body: TabBarView(
           children: [
-            Icon(Icons.directions_car),
+            _buildBody(),
             Icon(Icons.directions_transit),
             Icon(Icons.directions_bike),
           ],
