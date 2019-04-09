@@ -31,6 +31,8 @@ class User {
 
   Contribution contribution;
   Registration registration;
+  ProfessionalDetails profession;
+  StudentDetails student;
 
   User({
     this.name,
@@ -57,19 +59,23 @@ class User {
         mobileNumber = map['mobileNumber'] {
     if (isContributor) contribution = Contribution.fromMap(map['contribution']);
     if (isRegistered) registration = Registration.fromMap(map['registration']);
+    if (map['professionalDetails'] != null)
+      profession = ProfessionalDetails.fromMap(map['professionalDetails']);
+    if (map['studentDetails'] != null)
+      student = StudentDetails.fromMap(map['studentDetails']);
   }
 
   Map<String, dynamic> toJson() => {
-    "id": id,
-    "name": name,
-    "email": email,
-    "photoUrl": photoUrl,
-    "isRegistered": isRegistered,
-    "mobileNumber": mobileNumber,
-    "isPresent": isPresent,
-    "isRegistrationConfirmed": isRegistrationConfirmed,
-    "isContributor": isContributor
-  };
+        "id": id,
+        "name": name,
+        "email": email,
+        "photoUrl": photoUrl,
+        "isRegistered": isRegistered,
+        "mobileNumber": mobileNumber,
+        "isPresent": isPresent,
+        "isRegistrationConfirmed": isRegistrationConfirmed,
+        "isContributor": isContributor
+      };
 
   User.fromSnapshot(DocumentSnapshot snapshot)
       : this.fromMap(snapshot.data, reference: snapshot.reference);
@@ -90,10 +96,10 @@ class Registration {
         reasonToAttend = map['reasonToAttend'];
 
   Map<String, dynamic> toJson() => {
-    "occupation": this.occupation,
-    "competition": this.competition,
-    "reasonToAttend": this.reasonToAttend,
-  };
+        "occupation": this.occupation,
+        "competition": this.competition,
+        "reasonToAttend": this.reasonToAttend,
+      };
 
   Registration.fromSnapshot(DocumentSnapshot snapshot)
       : this.fromMap(snapshot.data, reference: snapshot.reference);
@@ -119,9 +125,64 @@ class Contribution {
         isVolunteer = map['volunteer'];
 
   Map<String, dynamic> toJson() => {
-    "socialMediaMarketing": isSocialMediaMarketingPerson,
-    "speaker": isSpeaker,
-    "administrationAndLogistics": isLogisticsAdministrator,
-    "volunteer": isVolunteer
-  };
+        "socialMediaMarketing": isSocialMediaMarketingPerson,
+        "speaker": isSpeaker,
+        "administrationAndLogistics": isLogisticsAdministrator,
+        "volunteer": isVolunteer
+      };
+}
+
+class StudentDetails {
+  final String uniName;
+  final String program;
+  final String currentYear;
+  final DocumentReference reference;
+
+  StudentDetails(
+      {this.uniName, this.program, this.currentYear, this.reference});
+
+  StudentDetails.fromMap(Map<dynamic, dynamic> map, {this.reference})
+      : program = map['program'],
+        uniName = map['uniName'],
+        currentYear = map['currentYear'];
+
+  Map<String, dynamic> toJson() => {
+        "program": this.program,
+        "uniName": this.uniName,
+        "currentYear": this.currentYear,
+      };
+
+  StudentDetails.fromSnapshot(DocumentSnapshot snapshot)
+      : this.fromMap(snapshot.data, reference: snapshot.reference);
+}
+
+class ProfessionalDetails {
+  final String yearsOfExp;
+  final String organizationName;
+  final String designation;
+  final String techStack;
+  final DocumentReference reference;
+
+  ProfessionalDetails(
+      {this.yearsOfExp,
+      this.organizationName,
+      this.designation,
+      this.techStack,
+      this.reference});
+
+  ProfessionalDetails.fromMap(Map<dynamic, dynamic> map, {this.reference})
+      : organizationName = map['organizationName'],
+        yearsOfExp = map['yearsOfExp'],
+        designation = map['designation'],
+        techStack = map['techStack'];
+
+  Map<String, dynamic> toJson() => {
+        "organizationName": this.organizationName,
+        "yearsOfExp": this.yearsOfExp,
+        "designation": this.designation,
+        "techStack": this.techStack,
+      };
+
+  ProfessionalDetails.fromSnapshot(DocumentSnapshot snapshot)
+      : this.fromMap(snapshot.data, reference: snapshot.reference);
 }

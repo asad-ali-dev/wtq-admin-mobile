@@ -6,7 +6,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wtq_admin/main.dart';
 import 'package:wtq_admin/model/user.dart';
 import 'package:wtq_admin/string_constants.dart';
-import 'package:flutter_tags/selectable_tags.dart';
 
 class AdminPage extends StatefulWidget {
   @override
@@ -59,9 +58,7 @@ class _AdminPageState extends State<AdminPage> {
 
   Widget _buildListOfCompetition(String name) {
     return Container(
-      child: Column(
-        children: <Widget>[Expanded(child: _streamBuilder(name))],
-      ),
+      child: _streamBuilder(name),
     );
   }
 
@@ -71,6 +68,7 @@ class _AdminPageState extends State<AdminPage> {
           .collection(kKeyUser)
           .where("isRegistered", isEqualTo: true)
           .where("registration.competition", isEqualTo: name)
+          .orderBy("name")
           .snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData)
@@ -91,10 +89,29 @@ class _AdminPageState extends State<AdminPage> {
   Widget _buildList(BuildContext context, List<DocumentSnapshot> snapshot) {
     if (snapshot == null) return Container();
     if (snapshot.length < 1) return Container();
-    return ListView(
-      padding: const EdgeInsets.only(top: 10.0),
-      children: snapshot.map((data) => _buildListItem(context, data)).toList(),
+    return Column(
+      children: <Widget>[
+        _buildCompetitionCounter(snapshot),
+        Expanded(
+          child: ListView(
+            children:
+                snapshot.map((data) => _buildListItem(context, data)).toList(),
+          ),
+        ),
+      ],
     );
+  }
+
+  Widget _buildCompetitionCounter(List<DocumentSnapshot> snapshot) {
+    var totalCompParticipants = snapshot.length.toString();
+    var confirmedCompParticipants = snapshot
+        .where((data) => data["isRegistrationConfirmed"] == true)
+        .toList()
+        .length
+        .toString();
+    return Container(
+        padding: EdgeInsets.only(top: 24, bottom: 8),
+        child: Text(confirmedCompParticipants + "/" + totalCompParticipants));
   }
 
   Widget _buildListItem(BuildContext context, DocumentSnapshot data) {
@@ -105,12 +122,16 @@ class _AdminPageState extends State<AdminPage> {
             color: Colors.green,
           )
         : Icon(Icons.done, color: Colors.grey[300]);
+    String thirdLine = "";
+    if (user.profession != null) thirdLine = user.profession.organizationName;
+    if (user.student != null) thirdLine = user.student.uniName;
     return ListTile(
       leading: CircleAvatar(
         backgroundImage: NetworkImage(user.photoUrl),
       ),
       title: _titleWidget(user),
-      subtitle: Text(user.email),
+      isThreeLine: true,
+      subtitle: Text(user.email+"\n"+thirdLine),
       trailing: listIcon,
       onTap: () {
         _markUserConfirmation(user);
@@ -122,31 +143,25 @@ class _AdminPageState extends State<AdminPage> {
     return Container(
       child: Row(
         children: <Widget>[
-          Flexible(flex: 2, fit: FlexFit.tight, child: Text(user.name)),
-          Flexible(
-            flex: 1,
-            fit: FlexFit.loose,
-            child: Container(
-              width: 100,
-              child: SelectableTags(
-                height: 15,
-                tags: [
-                  Tag(
-                    title: user.registration.occupation,
-                  ),
-                ],
-                fontSize: 12,
-                alignment: MainAxisAlignment.start,
-                columns: 1, // default 4
-                symmetry: true,
-                onPressed: (tag) {},
-                activeColor: Colors.white,
-                textActiveColor: Colors.black,
-              ),
-            ),
-          ),
+          Text(user.name),
+          _buildProfessionTag(user),
         ],
       ),
+    );
+  }
+
+  Widget _buildProfessionTag(User user) {
+    return Container(
+      margin: EdgeInsets.only(left: 10),
+      padding: EdgeInsets.only(left: 10, top: 2, right: 10, bottom: 2),
+      decoration: BoxDecoration(
+          color: user.registration.occupation == "Student"
+              ? Theme.of(context).accentColor
+              : Theme.of(context).primaryColor,
+          borderRadius: BorderRadius.all(Radius.circular(10.0))),
+      child: Center(
+          child: Text(user.registration.occupation,
+              style: TextStyle(fontSize: 12, color: Colors.white))),
     );
   }
 
