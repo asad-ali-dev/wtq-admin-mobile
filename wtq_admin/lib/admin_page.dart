@@ -13,17 +13,20 @@ class AdminPage extends StatefulWidget {
 }
 
 class _AdminPageState extends State<AdminPage> {
+  BuildContext _adminPageContext;
   @override
   Widget build(BuildContext context) {
+    _adminPageContext = context;
     return DefaultTabController(
       length: 3,
       child: Scaffold(
         appBar: AppBar(
           actions: <Widget>[
             IconButton(
+              tooltip: kTxtLogout,
               icon: Icon(Icons.exit_to_app),
               onPressed: () {
-                _onSignOut();
+                _showSignOutDialog();
               },
             ),
           ],
@@ -47,6 +50,33 @@ class _AdminPageState extends State<AdminPage> {
     );
   }
 
+  void _showSignOutDialog() {
+    showDialog(
+      context: _adminPageContext,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(kTxtLogout),
+          content: Text(kMsgSureToLogout),
+          actions: <Widget>[
+            FlatButton(
+              child: Text(kTxtNo),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            FlatButton(
+              child: Text(kTxtYes),
+              onPressed: () {
+                _onSignOut();
+                Navigator.of(context).pop();
+              },
+            )
+          ],
+        );
+      },
+    );
+  }
+
   void _onSignOut() async {
     await GoogleSignIn().signOut();
     await FirebaseAuth.instance.signOut();
@@ -66,15 +96,15 @@ class _AdminPageState extends State<AdminPage> {
     return StreamBuilder<QuerySnapshot>(
       stream: Firestore.instance
           .collection(kKeyUser)
-          .where("isRegistered", isEqualTo: true)
-          .where("registration.competition", isEqualTo: name)
-          .orderBy("name")
+          .where(kFBKeyIsRegistered, isEqualTo: true)
+          .where(kFBKeyRegistrationCompetition, isEqualTo: name)
+          .orderBy(kFBKeyName)
           .snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData)
           return Center(
             child: Text(
-              'Nothing found!',
+              kTxtNothingFound,
               style: Theme.of(context).textTheme.title.copyWith(
                     color: Colors.black26,
                     fontWeight: FontWeight.bold,
@@ -105,7 +135,7 @@ class _AdminPageState extends State<AdminPage> {
   Widget _buildCompetitionCounter(List<DocumentSnapshot> snapshot) {
     var totalCompParticipants = snapshot.length.toString();
     var confirmedCompParticipants = snapshot
-        .where((data) => data["isRegistrationConfirmed"] == true)
+        .where((data) => data[kFBKeyIsRegistrationConfirmed] == true)
         .toList()
         .length
         .toString();
@@ -131,7 +161,7 @@ class _AdminPageState extends State<AdminPage> {
       ),
       title: _titleWidget(user),
       isThreeLine: true,
-      subtitle: Text(user.email+"\n"+thirdLine),
+      subtitle: Text(user.email + "\n" + thirdLine),
       trailing: listIcon,
       onTap: () {
         _markUserConfirmation(user);
@@ -155,7 +185,7 @@ class _AdminPageState extends State<AdminPage> {
       margin: EdgeInsets.only(left: 10),
       padding: EdgeInsets.only(left: 10, top: 2, right: 10, bottom: 2),
       decoration: BoxDecoration(
-          color: user.registration.occupation == "Student"
+          color: user.registration.occupation == kFBKeyStudent
               ? Theme.of(context).accentColor
               : Theme.of(context).primaryColor,
           borderRadius: BorderRadius.all(Radius.circular(10.0))),
