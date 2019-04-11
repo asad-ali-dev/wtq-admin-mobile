@@ -173,7 +173,7 @@ class _AdminPageState extends State<AdminPage> {
     return Container(
       child: Row(
         children: <Widget>[
-          Text(user.name),
+          Expanded(child: Text(user.name, overflow: TextOverflow.ellipsis)),
           _buildProfessionTag(user),
         ],
       ),
@@ -182,7 +182,7 @@ class _AdminPageState extends State<AdminPage> {
 
   Widget _buildProfessionTag(User user) {
     return Container(
-      margin: EdgeInsets.only(left: 10),
+      margin: EdgeInsets.only(left: 4),
       padding: EdgeInsets.only(left: 10, top: 2, right: 10, bottom: 2),
       decoration: BoxDecoration(
           color: user.registration.occupation == kFBKeyStudent
