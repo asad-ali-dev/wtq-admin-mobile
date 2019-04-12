@@ -5,6 +5,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wtq_admin/main.dart';
 import 'package:wtq_admin/model/user.dart';
+import 'package:wtq_admin/service.dart';
 import 'package:wtq_admin/string_constants.dart';
 
 class AdminPage extends StatefulWidget {
@@ -92,16 +93,11 @@ class _AdminPageState extends State<AdminPage> {
     );
   }
 
-  StreamBuilder<QuerySnapshot> _streamBuilder(String name) {
-    return StreamBuilder<QuerySnapshot>(
-      stream: Firestore.instance
-          .collection(kKeyUser)
-          .where(kFBKeyIsRegistered, isEqualTo: true)
-          .where(kFBKeyRegistrationCompetition, isEqualTo: name)
-          .orderBy(kFBKeyName)
-          .snapshots(),
-      builder: (context, snapshot) {
-        if (!snapshot.hasData)
+  Widget _streamBuilder(String name) {
+    return StreamBuilder<Iterable<User>>(
+      stream: APIService.instance.fetchUsers(name),
+      builder: (context, userSnapshot) {
+        if (!userSnapshot.hasData)
           return Center(
             child: Text(
               kTxtNothingFound,
@@ -111,31 +107,34 @@ class _AdminPageState extends State<AdminPage> {
                   ),
             ),
           );
-        return _buildList(context, snapshot.data.documents);
+        return _buildList(context, userSnapshot.data.toList());
       },
     );
   }
 
-  Widget _buildList(BuildContext context, List<DocumentSnapshot> snapshot) {
-    if (snapshot == null) return Container();
-    if (snapshot.length < 1) return Container();
+  Widget _buildList(BuildContext context, List<User> users) {
+    if (users?.length == 0) return Container();
+
     return Column(
       children: <Widget>[
-        _buildCompetitionCounter(snapshot),
+        _buildCompetitionCounter(users),
         Expanded(
-          child: ListView(
-            children:
-                snapshot.map((data) => _buildListItem(context, data)).toList(),
+          child: ListView.builder(
+            itemCount: users.length,
+            itemBuilder: (context, position) => _buildListItem(
+                  context,
+                  users[position],
+                ),
           ),
         ),
       ],
     );
   }
 
-  Widget _buildCompetitionCounter(List<DocumentSnapshot> snapshot) {
-    var totalCompParticipants = snapshot.length.toString();
-    var confirmedCompParticipants = snapshot
-        .where((data) => data[kFBKeyIsRegistrationConfirmed] == true)
+  Widget _buildCompetitionCounter(List<User> users) {
+    var totalCompParticipants = users.length.toString();
+    var confirmedCompParticipants = users
+        .where((user) => user.isRegistrationConfirmed == true)
         .toList()
         .length
         .toString();
@@ -144,8 +143,7 @@ class _AdminPageState extends State<AdminPage> {
         child: Text(confirmedCompParticipants + "/" + totalCompParticipants));
   }
 
-  Widget _buildListItem(BuildContext context, DocumentSnapshot data) {
-    final user = User.fromSnapshot(data);
+  Widget _buildListItem(BuildContext context, User user) {
     Icon listIcon = user.isRegistrationConfirmed
         ? Icon(
             Icons.done,
@@ -197,9 +195,6 @@ class _AdminPageState extends State<AdminPage> {
 
   void _markUserConfirmation(User user) {
     user.isRegistrationConfirmed = !user.isRegistrationConfirmed;
-    Firestore.instance
-        .collection(kKeyUser)
-        .document(user.id)
-        .updateData(user.toJson());
+    APIService.instance.updateUser(user);
   }
 }
